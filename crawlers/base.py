@@ -5,7 +5,7 @@ from typing import Optional, List, Dict, Any
 from urllib.parse import urljoin, urlparse
 
 from crawl4ai import AsyncWebCrawler
-from crawl4ai.config import CrawlerRunConfig
+from crawl4ai import CrawlerRunConfig
 
 from config import settings
 
