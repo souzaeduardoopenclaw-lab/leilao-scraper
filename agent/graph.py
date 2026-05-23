@@ -42,7 +42,7 @@ def create_graph() -> StateGraph:
     # Parse -> aggregate (auctions extracted)
     graph.add_conditional_edges(
         "parse",
-        lambda state: "aggregate" if state.get("status") != "error" and state.get("auctions") else "error",
+        lambda state: "aggregate" if state.get("status") in ("done", "parsing") else "error",
     )
 
     # Aggregate -> render (data cleaned)
@@ -51,7 +51,7 @@ def create_graph() -> StateGraph:
     # Render -> save
     graph.add_conditional_edges(
         "render",
-        lambda state: "save" if state.get("status") != "error" and state.get("markdown") else "error",
+        lambda state: "save" if state.get("status") == "done" and state.get("markdown") else "error",
     )
 
     # Save -> end

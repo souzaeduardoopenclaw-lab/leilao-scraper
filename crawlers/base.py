@@ -34,10 +34,8 @@ class BaseCrawler:
     async def _get_crawler_config(self, page_number: int = 1) -> CrawlerRunConfig:
         """Get crawler configuration for a page."""
         return CrawlerRunConfig(
-            page_number=page_number,
             delay_before_return_html=self.delay,
             user_agent=self.user_agent,
-            headless=True,
             verbose=False,
         )
 
@@ -52,7 +50,7 @@ class BaseCrawler:
         """
         async with AsyncWebCrawler(verbose=False) as crawler:
             config = await self._get_crawler_config()
-            result = await crawler.crawl(url, config=config)
+            result = await crawler.arun(url, config=config)
 
             if not result.success:
                 return {

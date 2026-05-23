@@ -27,7 +27,7 @@ class LLMParser:
         """Initialize the LLM parser.
 
         Args:
-            provider: LLM provider ('openai' or 'gemini').
+            provider: LLM provider ('openai', 'gemini', or 'opencode').
             api_key: API key for the LLM provider.
         """
         self.provider = provider or settings.LLM_PROVIDER
@@ -40,6 +40,8 @@ class LLMParser:
             return os.environ.get("OPENAI_API_KEY", "")
         elif self.provider == "gemini":
             return os.environ.get("GEMINI_API_KEY", "")
+        elif self.provider == "opencode":
+            return os.environ.get("OPENAI_API_KEY", "")  # Uses same key
         else:
             raise ValueError(f"Unknown provider: {self.provider}")
 
@@ -55,6 +57,14 @@ class LLMParser:
             return ChatGoogleGenerativeAI(
                 model="gemini-2.0-flash",
                 api_key=self.api_key,
+                temperature=0,
+            )
+        elif self.provider == "opencode":
+            # OpenCode uses OpenAI-compatible API
+            return ChatOpenAI(
+                model="opencode",
+                api_key=self.api_key,
+                openai_api_base="https://api.opencode.ai/v1",
                 temperature=0,
             )
         else:

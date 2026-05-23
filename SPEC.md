@@ -61,12 +61,14 @@ any_error → error_node → retry? → crawl OR end
 - Aceita URL via CLI: `python -m agent.main https://example.com/leiloes`
 - Parâmetros opcionais: `--output <path.md>` e `--max-pages <N>`
 
-### 3.2 Crawl (Crawl4AI)
+### 3.2 Crawl (Crawl4AI + Cloudflare Bypass)
 - Renderiza páginas SPA (JavaScript-heavy)
 - Suporta paginação automática (próxima página via seletor CSS)
 - Extrai metadata: título da página, data do leilão, localização
 - Rate limiting respeitoso (1 req/s por padrão)
 - User-Agent customizável
+- **Cloudflare bypass:** Crawl4AI como primário; se site tem proteção CF (erro 525/503), cai no `CloudflareBypassCrawler` usando Playwright stealth com headless Chromium
+- Sites com proteção CF podem precisar de soluções adicionais (proxy rotativo, Selenium, etc.)
 
 ### 3.3 Parse (LangChain + LLM)
 - Usa LLM (Gemini ou OpenAI) para extrair Auction records do HTML

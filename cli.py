@@ -85,7 +85,11 @@ def main(
         if verbose:
             click.echo("Running graph...")
 
-        final_state = graph.invoke(initial_state)
+        import asyncio
+        async def run_graph():
+            return await graph.ainvoke(initial_state)
+
+        final_state = asyncio.run(run_graph())
 
         status = final_state.get("status")
         error = final_state.get("error")
